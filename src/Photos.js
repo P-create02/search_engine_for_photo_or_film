@@ -6,7 +6,6 @@ import { IoHome } from 'react-icons/io5'
 import { RiArrowUpCircleFill } from 'react-icons/ri'
 import { BiCopy } from 'react-icons/bi'
 
-// from https://unsplash.com/developers
 const clientID = `?client_id=${process.env.REACT_APP_KEY_P}`
 const mainUrl = `https://api.unsplash.com/photos/`
 const searchUrl = `https://api.unsplash.com/search/photos/`
@@ -21,7 +20,6 @@ function Photos() {
 
     
     const createImages = async() =>{
-        // document.cookie = 'SameSite=None';
         setLoading(true)
         let url
         const urlPage = `&page=${page}`
@@ -33,12 +31,18 @@ function Photos() {
         try {
             const response = await fetch(url)
             const data = await response.json()
-            // console.log(data);
 
             setPhotos((oldOnes) =>{
-                if(query && page === 1){ return data.results}
-                else if(query) {return[...oldOnes, ...data.results]}
-                else {return [...oldOnes, ...data]}
+                console.log(data.results);
+                if(query && page === 1) { 
+                    console.log(1);
+                    return data.results}
+                else if(query) {
+                    console.log(2);
+                    return[...oldOnes, ...data.results]}
+                else {
+                    console.log(3);
+                    return [...oldOnes, ...data]}
             })
             setLoading(false)
 
@@ -50,12 +54,12 @@ function Photos() {
     useEffect(() =>{
         createImages()
         // eslint-disable-next-line
-    }, [page])
+    }, [page, query])
 
 
     useEffect(() =>{
         const event = window.addEventListener('scroll', () =>{
-            if(!loading && window.innerHeight + window.scrollY >= document.body.scrollHeight){
+            if(!loading && window.innerHeight + window.scrollY >= document.body.scrollHeight - 2){
                 setPage((oldOne) => {return oldOne + 1})
                 setOn(true)
             }
@@ -63,6 +67,7 @@ function Photos() {
         return () => window.removeEventListener('scroll', event)
         // eslint-disable-next-line
     }, [])
+
     const goUp = () =>{
         document.documentElement.scrollTop = 0
     }
@@ -92,7 +97,6 @@ function Photos() {
                 <div className='photos-center'>
                 
                     {photos.map((item, index) =>{
-                        // console.log(item);
                         const { urls: { regular }, 
                         alt_description, 
                         user: {name, location, portfolio_url, 
@@ -102,13 +106,14 @@ function Photos() {
                             <article className='photo' key={index}>
                                 <img src={regular} alt={alt_description}/>
                                 <div className='photo-info'>
-                                    <div className="copy"><a href={regular} target="_blank" rel="noopener noreferrer" rel="noreferrer"><BiCopy /></a></div>
-                                    <div>
-                                    <h4>{name}</h4>
-                                    <h5>{location}</h5>
-                                    </div>
-                                    <a href={portfolio_url} target='_blank' rel="noreferrer">
-                                    <img src={medium} className='user-img' />
+                                    <div className="copy">
+                                        <a href={regular} target="_blank" rel="noopener noreferrer" rel="noreferrer"><BiCopy /></a></div>
+                                        <div>
+                                            <h4>{name}</h4>
+                                            <h5>{location}</h5>
+                                        </div>
+                                        <a href={portfolio_url} target='_blank' rel="noreferrer">
+                                        <img src={medium} className='user-img' alt={alt_description} />
                                     </a>
                                 </div>
                             </article>

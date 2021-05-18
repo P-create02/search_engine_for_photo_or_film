@@ -45,8 +45,6 @@ const Wrapper = styled.section`
   flex-wrap: wrap;
   color: black;
   padding: 1rem 0.25rem;
-  background: rgb(228,120,98);
-  background: linear-gradient(90deg, rgba(228,120,98,1) 0%, rgba(246,212,205,1) 15%, rgba(255,255,255,1) 50%, rgba(247,217,211,1) 85%, rgba(228,120,98,1) 100%);
   p{ color: black;}
   img {margin-bottom: 1rem;}
   div{ width: 100vw;}
